@@ -1,0 +1,57 @@
+apiVersion: bootstrap.cluster.x-k8s.io/v1beta1
+kind: KubeadmConfigTemplate
+metadata:
+  name: antrea-config-template
+  namespace: default
+spec:
+  template:
+    metadata: {}
+    spec:
+      files:
+        - content: |-
+            #!/bin/bash
+            while ! [ "$(cat /sys/class/net/eth0/operstate)" = "up" ]
+            do
+                sleep 2
+            done
+            sleep 5
+            ip route del default dev eth0
+            # remove local DNS servers
+            sed -i '/169.254.25.10/d' /etc/resolv.conf
+            sed -i '/10.0.2.3/d' /etc/resolv.conf
+            sed -i '/search/d' /etc/resolv.conf
+            exit 0
+          owner: root
+          path: /etc/rc.d/rc.local
+          permissions: "0500"
+      format: cloud-config
+      joinConfiguration:
+        discovery: {}
+        nodeRegistration:
+          imagePullPolicy: IfNotPresent
+      postKubeadmCommands:
+        - systemctl start rc-local
+        - systemctl enable rc-local
+        - sysctl -w vm.max_map_count=262144
+        - echo 'vm.max_map_count=262144' >> /etc/sysctl.conf
+        - sysctl -w net.core.bpf_jit_limit=452534528
+        - echo 'net.core.bpf_jit_limit=452534528' >> /etc/sysctl.conf
+        - ufw route allow in on antrea-gw0 >> /run/cluster-api/firewalld.log
+        - ufw allow in on antrea-gw0 >> /run/cluster-api/firewalld.log
+        - ufw route allow in on eth1 >> /run/cluster-api/firewalld.log
+        - ufw allow 4443/tcp
+        - systemctl restart ufw >> /run/cluster-api/firewalld.log
+        - systemctl restart systemd-modules-load >> /run/cluster-api/systemd-modules-load.log
+        - crictl pods | grep kube-proxy | awk '{ print $1 }' | xargs -I{} crictl stopp
+          {} >> /run/cluster-api/crictl.log
+        - crictl pods | grep antrea-agent | awk '{ print $1 }' | xargs -I{} crictl stopp
+          {} >> /run/cluster-api/crictl.log
+        - 'echo ''eventRecordQPS: 0'' >> /var/lib/kubelet/config.yaml'
+        - 'echo ''protectKernelDefaults: true'' >> /var/lib/kubelet/config.yaml'
+        - systemctl daemon-reload >> /run/cluster-api/kubelet.log
+        - systemctl restart kubelet >> /run/cluster-api/kubelet.log
+      preKubeadmCommands:
+        - HOSTNAME=`hostname`
+        - echo '127.0.0.1      '$HOSTNAME >>/etc/hosts
+        - echo '{{ .Values.hostIP }}      'edgestack.harbor.core >>/etc/hosts
+        - chsh -s /bin/bash capk

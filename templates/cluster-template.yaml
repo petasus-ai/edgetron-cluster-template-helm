@@ -1,0 +1,18 @@
+apiVersion: infrastructure.cluster.x-k8s.io/v1alpha1
+kind: KubevirtClusterTemplate
+metadata:
+  name: default-cluster-template
+  namespace: default
+spec:
+  template:
+    metadata: {}
+    spec:
+      controlPlaneEndpoint:
+        host: ""
+        port: 0
+      controlPlaneServiceTemplate:
+        metadata:
+          creationTimestamp: null
+        spec:
+          type: ClusterIP
+      sshKeys: {}

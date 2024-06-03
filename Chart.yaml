@@ -1,0 +1,10 @@
+apiVersion: v1
+appVersion: "3.2.0"
+description: A Helm chart for edgetron KaaS cluster templates
+name: edgetron-cluster-template
+version: 3.2.0
+sources:
+  - https://github.com/edgestack/edgetron
+maintainers:
+  - name: Changju Kim
+    email: changju.gim@sk.com

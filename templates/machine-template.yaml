@@ -1,0 +1,43 @@
+apiVersion: infrastructure.cluster.x-k8s.io/v1alpha1
+kind: KubevirtMachineTemplate
+metadata:
+  name: default-machine-template
+  namespace: default
+spec:
+  template:
+    spec:
+      virtualMachineBootstrapCheck:
+        checkStrategy: ssh
+      virtualMachineTemplate:
+        metadata:
+          creationTimestamp: null
+          namespace: default
+        spec:
+          runStrategy: Always
+          template:
+            metadata:
+              creationTimestamp: null
+            spec:
+              domain:
+                cpu:
+                  cores: 8
+                devices:
+                  disks:
+                    - disk:
+                        bus: virtio
+                      name: dv-volume
+                  interfaces:
+                    - bridge: {}
+                      name: default
+                memory:
+                  guest: 16Gi
+                resources: {}
+              networks:
+                - name: default
+                  pod: {}
+              nodeSelector:
+                kubernetes.io/arch: ""
+              volumes:
+                - dataVolume:
+                    name: boot-volume
+                  name: dv-volume
