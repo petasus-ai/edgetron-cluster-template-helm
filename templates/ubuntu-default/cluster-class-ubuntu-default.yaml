@@ -1,7 +1,7 @@
 apiVersion: cluster.x-k8s.io/v1beta1
 kind: ClusterClass
 metadata:
-  name: antrea-cluster-class
+  name: ubuntu-default-cluster-class
   namespace: default
 spec:
   controlPlane:
@@ -17,7 +17,7 @@ spec:
     ref:
       apiVersion: controlplane.cluster.x-k8s.io/v1beta1
       kind: KubeadmControlPlaneTemplate
-      name: antrea-control-plane-template
+      name: ubuntu-default-control-plane-template
       namespace: default
   infrastructure:
     ref:
@@ -112,7 +112,7 @@ spec:
             matchResources:
               machineDeploymentClass:
                 names:
-                  - ubuntu
+                  - default
       name: KubevirtControlPlaneMachineTemplatePatch
   variables:
     - metadata: {}
@@ -283,7 +283,7 @@ spec:
           type: object
   workers:
     machineDeployments:
-      - class: ubuntu
+      - class: default
         namingStrategy:
           template: {{`'{{ .cluster.name }}-{{ .machineDeployment.topologyName }}'`}}
         template:
@@ -291,7 +291,7 @@ spec:
             ref:
               apiVersion: bootstrap.cluster.x-k8s.io/v1beta1
               kind: KubeadmConfigTemplate
-              name: antrea-config-template
+              name: ubuntu-default-config-template
               namespace: default
           infrastructure:
             ref:

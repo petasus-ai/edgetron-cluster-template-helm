@@ -1,7 +1,7 @@
 apiVersion: controlplane.cluster.x-k8s.io/v1beta1
 kind: KubeadmControlPlaneTemplate
 metadata:
-  name: rhel-control-plane-template
+  name: rhel-default-control-plane-template
   namespace: default
 spec:
   template:

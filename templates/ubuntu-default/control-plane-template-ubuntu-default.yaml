@@ -1,7 +1,7 @@
 apiVersion: controlplane.cluster.x-k8s.io/v1beta1
 kind: KubeadmControlPlaneTemplate
 metadata:
-  name: antrea-control-plane-template
+  name: ubuntu-default-control-plane-template
   namespace: default
 spec:
   template:
@@ -60,8 +60,6 @@ spec:
           - echo 'vm.max_map_count=262144' >> /etc/sysctl.conf
           - sysctl -w net.core.bpf_jit_limit=452534528
           - echo 'net.core.bpf_jit_limit=452534528' >> /etc/sysctl.conf
-          - ufw route allow in on antrea-gw0 >> /run/cluster-api/firewalld.log
-          - ufw allow in on antrea-gw0 >> /run/cluster-api/firewalld.log
           - ufw route allow in on eth1 >> /run/cluster-api/firewalld.log
           - ufw allow 4443/tcp
           - ufw allow 10257/tcp

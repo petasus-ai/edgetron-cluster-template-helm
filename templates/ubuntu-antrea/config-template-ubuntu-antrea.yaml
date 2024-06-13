@@ -1,7 +1,7 @@
 apiVersion: bootstrap.cluster.x-k8s.io/v1beta1
 kind: KubeadmConfigTemplate
 metadata:
-  name: antrea-config-template
+  name: ubuntu-antrea-config-template
   namespace: default
 spec:
   template:

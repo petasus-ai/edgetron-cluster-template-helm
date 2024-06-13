@@ -1,7 +1,7 @@
 apiVersion: cluster.x-k8s.io/v1beta1
 kind: ClusterClass
 metadata:
-  name: ubuntu-cluster-class
+  name: rhel-default-cluster-class
   namespace: default
 spec:
   controlPlane:
@@ -17,7 +17,7 @@ spec:
     ref:
       apiVersion: controlplane.cluster.x-k8s.io/v1beta1
       kind: KubeadmControlPlaneTemplate
-      name: ubuntu-control-plane-template
+      name: rhel-default-control-plane-template
       namespace: default
   infrastructure:
     ref:
@@ -112,8 +112,7 @@ spec:
             matchResources:
               machineDeploymentClass:
                 names:
-                  - rhel
-                  - ubuntu
+                  - default
       name: KubevirtControlPlaneMachineTemplatePatch
   variables:
     - metadata: {}
@@ -284,7 +283,7 @@ spec:
           type: object
   workers:
     machineDeployments:
-      - class: rhel
+      - class: default
         namingStrategy:
           template: {{`'{{ .cluster.name }}-{{ .machineDeployment.topologyName }}'`}}
         template:
@@ -292,24 +291,7 @@ spec:
             ref:
               apiVersion: bootstrap.cluster.x-k8s.io/v1beta1
               kind: KubeadmConfigTemplate
-              name: rhel-config-template
-              namespace: default
-          infrastructure:
-            ref:
-              apiVersion: infrastructure.cluster.x-k8s.io/v1alpha1
-              kind: KubevirtMachineTemplate
-              name: default-machine-template
-              namespace: default
-          metadata: {}
-      - class: ubuntu
-        namingStrategy:
-          template: {{`'{{ .cluster.name }}-{{ .machineDeployment.topologyName }}'`}}
-        template:
-          bootstrap:
-            ref:
-              apiVersion: bootstrap.cluster.x-k8s.io/v1beta1
-              kind: KubeadmConfigTemplate
-              name: ubuntu-config-template
+              name: rhel-default-config-template
               namespace: default
           infrastructure:
             ref:
