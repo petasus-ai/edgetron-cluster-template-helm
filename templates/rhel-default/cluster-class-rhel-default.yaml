@@ -11,7 +11,6 @@ spec:
         kind: KubevirtMachineTemplate
         name: default-machine-template
         namespace: default
-    metadata: {}
     namingStrategy:
       template: {{`'{{ .cluster.name }}'`}}
     ref:
@@ -91,6 +90,10 @@ spec:
               valueFrom:
                 variable: network
             - op: add
+              path: /spec/template/spec/virtualMachineTemplate/spec/template/spec/volumes/-
+              valueFrom:
+                variable: volume
+            - op: add
               path: /spec/template/spec/virtualMachineTemplate/spec/dataVolumeTemplates
               valueFrom:
                 variable: dataVolumeTemplate
@@ -98,6 +101,10 @@ spec:
               path: /spec/template/spec/virtualMachineTemplate/spec/template/spec/domain/cpu/cores
               valueFrom:
                 variable: cores
+            - op: add
+              path: /spec/template/spec/virtualMachineTemplate/spec/template/spec/domain/devices/disks/-
+              valueFrom:
+                variable: deviceDisk
             - op: add
               path: /spec/template/spec/virtualMachineTemplate/spec/template/spec/domain/memory/guest
               valueFrom:
@@ -115,15 +122,13 @@ spec:
                   - default
       name: KubevirtControlPlaneMachineTemplatePatch
   variables:
-    - metadata: {}
-      name: architecture
+    - name: architecture
       required: false
       schema:
         openAPIV3Schema:
           default: arm64
           type: string
-    - metadata: {}
-      name: nodeSelector
+    - name: nodeSelector
       required: false
       schema:
         openAPIV3Schema:
@@ -132,8 +137,7 @@ spec:
               default: arm64
               type: string
           type: object
-    - metadata: {}
-      name: virtualMachineAnnotations
+    - name: virtualMachineAnnotations
       required: true
       schema:
         openAPIV3Schema:
@@ -158,8 +162,7 @@ spec:
           required:
             - interfaces
           type: object
-    - metadata: {}
-      name: deviceInterface
+    - name: deviceInterface
       required: true
       schema:
         openAPIV3Schema:
@@ -171,8 +174,24 @@ spec:
           required:
             - name
           type: object
-    - metadata: {}
-      name: network
+    - name: deviceDisk
+      required: false
+      schema:
+        openAPIV3Schema:
+          properties:
+            disk:
+              properties:
+                bus:
+                  type: string
+              required:
+                - bus
+              type: object
+            name:
+              type: string
+          required:
+            - name
+          type: object
+    - name: network
       required: true
       schema:
         openAPIV3Schema:
@@ -190,8 +209,25 @@ spec:
             - name
             - multus
           type: object
-    - metadata: {}
-      name: dataVolumeTemplate
+    - name: volume
+      required: false
+      schema:
+        openAPIV3Schema:
+          properties:
+            dataVolume:
+              properties:
+                name:
+                  type: string
+              required:
+                - name
+              type: object
+            name:
+              type: string
+          required:
+            - name
+            - dataVolume
+          type: object
+    - name: dataVolumeTemplate
       required: true
       schema:
         openAPIV3Schema:
@@ -252,22 +288,19 @@ spec:
               - metadata
             type: object
           type: array
-    - metadata: {}
-      name: cores
+    - name: cores
       required: false
       schema:
         openAPIV3Schema:
           default: 8
           type: integer
-    - metadata: {}
-      name: memory
+    - name: memory
       required: false
       schema:
         openAPIV3Schema:
           default: 16Gi
           type: string
-    - metadata: {}
-      name: firmware
+    - name: firmware
       required: false
       schema:
         openAPIV3Schema:
@@ -299,4 +332,3 @@ spec:
               kind: KubevirtMachineTemplate
               name: default-machine-template
               namespace: default
-          metadata: {}
