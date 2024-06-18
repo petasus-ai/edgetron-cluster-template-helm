@@ -25,7 +25,8 @@ spec:
       name: default-cluster-template
       namespace: default
   patches:
-    - definitions:
+    - name: KubevirtControlPlaneMachineTemplatePatch
+      definitions:
         - jsonPatches:
             - op: add
               path: /spec/template/spec/virtualMachineTemplate/spec/template/spec/architecture
@@ -68,6 +69,8 @@ spec:
             kind: KubevirtMachineTemplate
             matchResources:
               controlPlane: true
+    - name: KubevirtNodePoolMachineTemplatePatch
+      definitions:
         - jsonPatches:
             - op: add
               path: /spec/template/spec/virtualMachineTemplate/spec/template/spec/architecture
@@ -120,7 +123,6 @@ spec:
               machineDeploymentClass:
                 names:
                   - default
-      name: KubevirtControlPlaneMachineTemplatePatch
   variables:
     - name: architecture
       required: false
@@ -183,13 +185,9 @@ spec:
               properties:
                 bus:
                   type: string
-              required:
-                - bus
               type: object
             name:
               type: string
-          required:
-            - name
           type: object
     - name: network
       required: true
