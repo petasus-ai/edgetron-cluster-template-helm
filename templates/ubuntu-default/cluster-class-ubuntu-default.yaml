@@ -93,10 +93,6 @@ spec:
               valueFrom:
                 variable: network
             - op: add
-              path: /spec/template/spec/virtualMachineTemplate/spec/template/spec/volumes/-
-              valueFrom:
-                variable: volume
-            - op: add
               path: /spec/template/spec/virtualMachineTemplate/spec/dataVolumeTemplates
               valueFrom:
                 variable: dataVolumeTemplate
@@ -104,10 +100,6 @@ spec:
               path: /spec/template/spec/virtualMachineTemplate/spec/template/spec/domain/cpu/cores
               valueFrom:
                 variable: cores
-            - op: add
-              path: /spec/template/spec/virtualMachineTemplate/spec/template/spec/domain/devices/disks/-
-              valueFrom:
-                variable: deviceDisk
             - op: add
               path: /spec/template/spec/virtualMachineTemplate/spec/template/spec/domain/memory/guest
               valueFrom:
@@ -176,19 +168,6 @@ spec:
           required:
             - name
           type: object
-    - name: deviceDisk
-      required: false
-      schema:
-        openAPIV3Schema:
-          properties:
-            disk:
-              properties:
-                bus:
-                  type: string
-              type: object
-            name:
-              type: string
-          type: object
     - name: network
       required: true
       schema:
@@ -206,24 +185,6 @@ spec:
           required:
             - name
             - multus
-          type: object
-    - name: volume
-      required: false
-      schema:
-        openAPIV3Schema:
-          properties:
-            dataVolume:
-              properties:
-                name:
-                  type: string
-              required:
-                - name
-              type: object
-            name:
-              type: string
-          required:
-            - name
-            - dataVolume
           type: object
     - name: dataVolumeTemplate
       required: true
