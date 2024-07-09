@@ -2,7 +2,7 @@ apiVersion: controlplane.cluster.x-k8s.io/v1beta1
 kind: KubeadmControlPlaneTemplate
 metadata:
   name: ubuntu-default-control-plane-template
-  namespace: default
+  namespace: {{ .Values.namespace }}
 spec:
   template:
     metadata: {}

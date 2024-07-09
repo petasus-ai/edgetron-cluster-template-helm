@@ -2,7 +2,7 @@ apiVersion: cluster.x-k8s.io/v1beta1
 kind: ClusterClass
 metadata:
   name: rhel-default-cluster-class
-  namespace: default
+  namespace: {{ .Values.namespace }}
 spec:
   controlPlane:
     machineInfrastructure:
@@ -10,20 +10,20 @@ spec:
         apiVersion: infrastructure.cluster.x-k8s.io/v1alpha1
         kind: KubevirtMachineTemplate
         name: default-machine-template
-        namespace: default
+        namespace: {{ .Values.namespace }}
     namingStrategy:
       template: {{`'{{ .cluster.name }}'`}}
     ref:
       apiVersion: controlplane.cluster.x-k8s.io/v1beta1
       kind: KubeadmControlPlaneTemplate
       name: rhel-default-control-plane-template
-      namespace: default
+      namespace: {{ .Values.namespace }}
   infrastructure:
     ref:
       apiVersion: infrastructure.cluster.x-k8s.io/v1alpha1
       kind: KubevirtClusterTemplate
       name: default-cluster-template
-      namespace: default
+      namespace: {{ .Values.namespace }}
   patches:
     - name: KubevirtControlPlaneMachineTemplatePatch
       definitions:
@@ -284,10 +284,10 @@ spec:
               apiVersion: bootstrap.cluster.x-k8s.io/v1beta1
               kind: KubeadmConfigTemplate
               name: rhel-default-config-template
-              namespace: default
+              namespace: {{ .Values.namespace }}
           infrastructure:
             ref:
               apiVersion: infrastructure.cluster.x-k8s.io/v1alpha1
               kind: KubevirtMachineTemplate
               name: default-machine-template
-              namespace: default
+              namespace: {{ .Values.namespace }}

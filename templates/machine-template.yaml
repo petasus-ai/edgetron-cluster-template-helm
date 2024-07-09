@@ -2,7 +2,7 @@ apiVersion: infrastructure.cluster.x-k8s.io/v1alpha1
 kind: KubevirtMachineTemplate
 metadata:
   name: default-machine-template
-  namespace: default
+  namespace: {{ .Values.namespace }}
 spec:
   template:
     spec:
@@ -11,7 +11,7 @@ spec:
       virtualMachineTemplate:
         metadata:
           creationTimestamp: null
-          namespace: default
+          namespace: {{ .Values.namespace }}
         spec:
           runStrategy: Always
           template:
