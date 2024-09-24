@@ -220,6 +220,9 @@ spec:
                         type: string
                       osDistro:
                         type: string
+                      managedk8s:
+                        type: string
+                        default: "true"
                 type: object
               spec:
                 properties:
