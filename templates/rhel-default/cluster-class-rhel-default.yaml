@@ -209,6 +209,17 @@ spec:
                   name:
                     default: boot-volume
                     type: string
+                  annotations:
+                    type: object
+                    properties:
+                      cpuArch:
+                        type: string
+                      description:
+                        type: string
+                      osType:
+                        type: string
+                      osDistro:
+                        type: string
                 type: object
               spec:
                 properties:
