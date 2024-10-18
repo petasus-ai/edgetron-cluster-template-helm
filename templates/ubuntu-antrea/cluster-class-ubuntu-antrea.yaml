@@ -173,6 +173,8 @@ spec:
           properties:
             bridge:
               type: object
+            sriov:
+              type: object
             name:
               type: string
           required:
