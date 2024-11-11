@@ -51,6 +51,14 @@ spec:
               valueFrom:
                 variable: virtualMachineAnnotations
             - op: add
+              path: /spec/template/spec/virtualMachineTemplate/spec/template/spec/domain/devices/hostDevices
+              valueFrom:
+                variable: hostDevice
+            - op: add
+              path: /spec/template/spec/virtualMachineTemplate/spec/template/spec/domain/devices/gpus
+              valueFrom:
+                variable: gpu
+            - op: add
               path: /spec/template/spec/virtualMachineTemplate/spec/template/spec/domain/devices/interfaces/-
               valueFrom:
                 variable: deviceInterface
@@ -166,6 +174,30 @@ spec:
           required:
             - interfaces
           type: object
+    - name: hostDevice
+      required: false
+      schema:
+        openAPIV3Schema:
+          items:
+            properties:
+              deviceName:
+                type: string
+              name:
+                type: string
+            type: object
+          type: array
+    - name: gpu
+      required: false
+      schema:
+        openAPIV3Schema:
+          items:
+            properties:
+              deviceName:
+                type: string
+              name:
+                type: string
+            type: object
+          type: array
     - name: deviceInterface
       required: true
       schema:
