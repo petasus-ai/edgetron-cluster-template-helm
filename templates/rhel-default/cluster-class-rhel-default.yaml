@@ -51,14 +51,6 @@ spec:
               valueFrom:
                 variable: virtualMachineAnnotations
             - op: add
-              path: /spec/template/spec/virtualMachineTemplate/spec/template/spec/domain/devices/hostDevices
-              valueFrom:
-                variable: hostDevice
-            - op: add
-              path: /spec/template/spec/virtualMachineTemplate/spec/template/spec/domain/devices/gpus
-              valueFrom:
-                variable: gpu
-            - op: add
               path: /spec/template/spec/virtualMachineTemplate/spec/template/spec/domain/devices/interfaces/-
               valueFrom:
                 variable: deviceInterface
