@@ -1,7 +1,7 @@
 apiVersion: cluster.x-k8s.io/v1beta1
 kind: ClusterClass
 metadata:
-  name: ubuntu-default-cluster-class
+  name: rhel-cluster-class
   namespace: {{ .Values.namespace }}
 spec:
   controlPlane:
@@ -9,12 +9,12 @@ spec:
       maxUnhealthy: 100%
       nodeStartupTimeout: 20m0s
       unhealthyConditions:
-        - status: Unknown
-          timeout: 5m0s
-          type: Ready
-        - status: "False"
-          timeout: 5m0s
-          type: Ready
+      - status: Unknown
+        timeout: 5m0s
+        type: Ready
+      - status: "False"
+        timeout: 5m0s
+        type: Ready
     machineInfrastructure:
       ref:
         apiVersion: infrastructure.cluster.x-k8s.io/v1alpha1
@@ -26,7 +26,7 @@ spec:
     ref:
       apiVersion: controlplane.cluster.x-k8s.io/v1beta1
       kind: KubeadmControlPlaneTemplate
-      name: ubuntu-default-control-plane-template
+      name: rhel-control-plane-template
       namespace: {{ .Values.namespace }}
   infrastructure:
     ref:
@@ -94,14 +94,6 @@ spec:
               path: /spec/template/spec/virtualMachineTemplate/spec/template/metadata/annotations
               valueFrom:
                 variable: virtualMachineAnnotations
-            - op: add
-              path: /spec/template/spec/virtualMachineTemplate/spec/template/spec/domain/devices/hostDevices
-              valueFrom:
-                variable: hostDevice
-            - op: add
-              path: /spec/template/spec/virtualMachineTemplate/spec/template/spec/domain/devices/gpus
-              valueFrom:
-                variable: gpu
             - op: add
               path: /spec/template/spec/virtualMachineTemplate/spec/template/spec/domain/devices/interfaces/-
               valueFrom:
@@ -341,7 +333,7 @@ spec:
             ref:
               apiVersion: bootstrap.cluster.x-k8s.io/v1beta1
               kind: KubeadmConfigTemplate
-              name: ubuntu-default-config-template
+              name: rhel-config-template
               namespace: {{ .Values.namespace }}
           infrastructure:
             ref:

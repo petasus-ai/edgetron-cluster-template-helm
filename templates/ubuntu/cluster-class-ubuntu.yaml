@@ -1,7 +1,7 @@
 apiVersion: cluster.x-k8s.io/v1beta1
 kind: ClusterClass
 metadata:
-  name: ubuntu-antrea-cluster-class
+  name: ubuntu-cluster-class
   namespace: {{ .Values.namespace }}
 spec:
   controlPlane:
@@ -26,7 +26,7 @@ spec:
     ref:
       apiVersion: controlplane.cluster.x-k8s.io/v1beta1
       kind: KubeadmControlPlaneTemplate
-      name: ubuntu-antrea-control-plane-template
+      name: ubuntu-control-plane-template
       namespace: {{ .Values.namespace }}
   infrastructure:
     ref:
@@ -341,7 +341,7 @@ spec:
             ref:
               apiVersion: bootstrap.cluster.x-k8s.io/v1beta1
               kind: KubeadmConfigTemplate
-              name: ubuntu-antrea-config-template
+              name: ubuntu-config-template
               namespace: {{ .Values.namespace }}
           infrastructure:
             ref:
