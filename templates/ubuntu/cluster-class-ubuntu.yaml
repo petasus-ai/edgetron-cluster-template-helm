@@ -74,6 +74,10 @@ spec:
               path: /spec/template/spec/virtualMachineTemplate/spec/template/spec/domain/firmware
               valueFrom:
                 variable: firmware
+            - op: add
+              path: /spec/template/spec/virtualMachineTemplate/spec/template/spec/domain/features
+              valueFrom:
+                variable: features
           selector:
             apiVersion: infrastructure.cluster.x-k8s.io/v1alpha1
             kind: KubevirtMachineTemplate
@@ -126,6 +130,10 @@ spec:
               path: /spec/template/spec/virtualMachineTemplate/spec/template/spec/domain/firmware
               valueFrom:
                 variable: firmware
+            - op: add
+              path: /spec/template/spec/virtualMachineTemplate/spec/template/spec/domain/features
+              valueFrom:
+                variable: features
           selector:
             apiVersion: infrastructure.cluster.x-k8s.io/v1alpha1
             kind: KubevirtMachineTemplate
@@ -331,6 +339,24 @@ spec:
                   type: object
               type: object
           type: object
+          default:
+            bootloader:
+              efi:
+                secureBoot: false
+    - name: features
+      required: false
+      schema:
+        openAPIV3Schema:
+          properties:
+            smm:
+              properties:
+                enabled:
+                  type: boolean
+              type: object
+          type: object
+          default:
+            smm:
+              enabled: false
   workers:
     machineDeployments:
       - class: default
