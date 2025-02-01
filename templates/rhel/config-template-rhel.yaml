@@ -29,6 +29,8 @@ spec:
         discovery: {}
         nodeRegistration:
           imagePullPolicy: IfNotPresent
+          kubeletExtraArgs:
+            register-with-taints: karpenter.sh/unregistered:NoExecute
       postKubeadmCommands:
         - systemctl start rc-local
         - systemctl enable rc-local
